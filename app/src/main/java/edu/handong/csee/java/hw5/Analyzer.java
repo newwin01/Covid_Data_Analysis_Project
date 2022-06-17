@@ -27,8 +27,8 @@ public class Analyzer {
 	 * Analyzer constructor receive dataList as data csv file
 	 * parse data as array and organize
 	 */
-	public Analyzer(ArrayList<String> dataList) {
-		String data[]=dataList.toArray(new String[0]);
+	public Analyzer(String[] dataList) {
+		String data[]=dataList;
 		String countryData[];//String array to store real data temporary
 		String tempData[];//String array to use for parsing
 		int i=0;//for loop

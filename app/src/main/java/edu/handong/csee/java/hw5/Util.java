@@ -1,5 +1,7 @@
 package edu.handong.csee.java.hw5;
 
+import java.util.LinkedHashMap;
+
 public class Util {
 	/*
 	 * class make string to integer
@@ -34,5 +36,27 @@ public class Util {
 			}
 		}
 		return fieldNum-1;
+	}
+	
+	public static LinkedHashMap<String,Integer> convertToHashMap(CovidArrayList<String[]> list,int length){
+		try {
+			LinkedHashMap<String, Integer> finalValue = new LinkedHashMap<String,Integer>();
+			for(int j=0;j<list.length();j++) {
+				String country = list.get(j)[1];
+				Integer patientNumber = Util.makeInteger(list.get(j)[length-1]);
+				Integer oldPatientNumber;
+				if(finalValue.containsKey(country)) {
+					oldPatientNumber = finalValue.get(country);
+					patientNumber = patientNumber + oldPatientNumber;
+					finalValue.put(country, patientNumber);
+				} else {
+					finalValue.put(country,patientNumber);
+				}	
+			}
+			return finalValue;
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
