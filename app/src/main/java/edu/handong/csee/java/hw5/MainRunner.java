@@ -1,18 +1,13 @@
 package edu.handong.csee.java.hw5;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-
-import javax.imageio.IIOException;
+import java.util.List;
+import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -24,7 +19,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.util.zip.*;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.FileHeader;
+
 /*
  * MainRunner class receive arguments and to specific function 
  */
@@ -33,9 +31,10 @@ public class MainRunner {
 	private String confirmedData;
 	private String recoveredData;
 	private String country;
+	private String output;
 	private boolean sort;
 	private boolean help;
-	private String output;
+	private CovidArrayList<String> countryList;
 	private CovidArrayList<String[]> list;
 	LinkedHashMap<String, Integer> finalValue;
 /*
@@ -49,7 +48,6 @@ public class MainRunner {
 	private void run(String args[]) {
 		list = new CovidArrayList<String[]>();
 		finalValue = new LinkedHashMap<String,Integer>();
-		byte[] buffer = new byte[1024];
 		String data = null;
 		String exe;
 		Options options = createOptions(); 
@@ -83,25 +81,39 @@ public class MainRunner {
 				exe = data.substring(data.lastIndexOf(".")+1);
 			}
 			if(exe.equals("zip")) {
+				int fieldNumber = 0;
+				int i=0;
+				@SuppressWarnings("resource")
+				ZipFile zipFile = new ZipFile(data);
 				try {
-					ZipInputStream zis = new ZipInputStream(new FileInputStream(data));
-					ZipEntry zipEntry = zis.getNextEntry();
-				} catch (FileNotFoundException e) {
-					printHelp(options);
-					return;
+					List<FileHeader> unzipFile = zipFile.getFileHeaders();
+					InputStream inputStream = zipFile.getInputStream(unzipFile.get(0));
+					@SuppressWarnings("resource")
+					Scanner scannerFile = new Scanner(inputStream);
+					while (scannerFile.hasNextLine ()) {
+						String line = scannerFile.nextLine ();
+						if(i==0) {
+							fieldNumber=line.split(",").length;
+						}
+						else {
+							list.add(Util.convertToStringArray(line, fieldNumber));
+						}
+						i++;
+					}
+				} catch (ZipException e) {
+					e.printStackTrace();
 				} catch (IOException e) {
-					printHelp(options);
-					return;
+					e.printStackTrace();
 				}
+				
+				finalValue=Util.convertToHashMap(list,fieldNumber);
 			}
-			
-			
-			if(data!=null&&country==null) {
+			else if(exe.equals("csv")) {
 				String[] line = null;
 				Reader in = null;
 				int i=0;
 				try {
-					in = new FileReader(confirmedData);
+					in = new FileReader(data);
 				} catch (FileNotFoundException e) {
 					printHelp(options);
 				}
@@ -124,65 +136,62 @@ public class MainRunner {
 				}
 				
 				finalValue=Util.convertToHashMap(list, length);
-				
+			}
+			
+			if(data!=null&&country==null) {
+
 				Finalizer finalizer = new Finalizer(finalValue);
-				finalizer.printSortDataByKey();
 				
 				
+				System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+				System.out.println("The total number of the accumulated patients until now: " + finalizer.printTotalPatient());
 				
-				
-//				Analyzer analyzer = new Analyzer(dataList);
-//				System.out.println("The total number of countries: " + analyzer.getNumberOfCountries());
-//				System.out.println("The total number of the accumulated patients until now: " + analyzer.getNumberOfAllPatients());
-//				
-//				if(sort) {
-//					System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
-//					analyzer.printSortDataByValue();
-//				}
-//				else {
-//					System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
-//					analyzer.printSortDataByKey();
-//				}
+				if(sort) {
+					System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
+					finalizer.printSortDataByCountryValue();
+					
+				}
+				else {
+					System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+					finalizer.printSortDataByKey();
+				}
 				
 				
 			}
-//			if(data!=null&&country!=null) {
-//				BufferedReader inputStream1;
-//				BufferedReader inputStream2;
-//				try {
-//					inputStream1 = new BufferedReader(new FileReader(data));
-//					while((line=inputStream1.readLine()) != null) {
-//						dataList.add(line);
-//					}
-//					
-//				} catch (FileNotFoundException e1) {
-//					printHelp(options);
-//					return;
-//				} catch (IOException e) {
-//				}
-//				try {
-//					inputStream2 = new BufferedReader(new FileReader(country));
-//					while((line=inputStream2.readLine())!=null) {
-//						countryList.add(line.trim());
-//					}
-//				}  catch (FileNotFoundException e1) {
-//					printHelp(options);
-//					return;
-//				} catch (IOException e) {
-//					
-//				}
-//				Analyzer analyzer = new Analyzer(dataList,countryList);
-//				System.out.println("The total number of countries: " + analyzer.getNumberOfCountries());
-//				System.out.println("The total number of the accumulated patients until now: " + analyzer.getNumberOfAllPatients());
-//				if(sort) {
-//					System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
-//					analyzer.printSortDataByCountryValue();
-//				}else {
-//					System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
-//					analyzer.printSortDataByCountryKey();
-//					
-//				}
-//			}
+			if(data!=null&&country!=null) {
+				countryList = new CovidArrayList<String>();
+				Reader in = null;
+				int i=0;
+				String line = null;
+				try {
+					in = new FileReader(country);
+				} catch (FileNotFoundException e) {
+					printHelp(options);
+				}
+				try {
+					CSVParser parse = CSVFormat.DEFAULT.parse(in);
+						for(CSVRecord record:parse) {
+							line = record.get(0);
+							countryList.add(line);
+						}
+				} catch (IOException e) {
+					printHelp(options);
+					return;
+				}
+				Finalizer finalizer = new Finalizer(finalValue,countryList);
+				
+				System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+				System.out.println("The total number of the accumulated patients until now: " + finalizer.printTotalPatient());
+				
+				if(sort) {
+					System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
+					finalizer.printSortDataByCountryValue();
+				}
+				else {
+					System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+					finalizer.printSortDataByCountryKey();
+				}
+			}
 			
 		}
 	}

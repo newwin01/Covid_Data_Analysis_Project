@@ -51,13 +51,10 @@ public class CovidArrayList<E>  {
 		}
 	}
 	
-
 	
 	public boolean contain(E target) {
 		return find(target) != null;
 	}
-	
-	
 	
 	
 	private ListNode find(E target) {
@@ -79,8 +76,8 @@ public class CovidArrayList<E>  {
 			newNode = newNode.link;
 		}
 		return newNode.data;
-	}
-	
+	}	
+		
 	
 	
 }

@@ -59,4 +59,54 @@ public class Util {
 		}
 		return null;
 	}
+	
+	public static String[] convertToStringArray(String info,int numberOfField) {
+		String numberData[] = new String[numberOfField];
+		int tempCharPosition1=0;//index to parse
+		int tempCharPosition2=0;//index to parse
+		String[] tempData;
+		String temp;
+		if(info.indexOf("\"")!=-1) {
+			if(info.indexOf("\"")==0) {
+				tempCharPosition1=info.indexOf("\"");
+				tempCharPosition2=info.indexOf("\"",tempCharPosition1+1);
+				numberData[0]=info.substring(tempCharPosition1+1,tempCharPosition2);
+				if(info.indexOf("\"",tempCharPosition2+1)!=-1) {
+					tempCharPosition1=tempCharPosition2+1;
+					tempCharPosition1=info.indexOf("\"",tempCharPosition1);
+					tempCharPosition2=info.indexOf("\"",tempCharPosition1+1);
+					numberData[1]=info.substring(tempCharPosition1+1,tempCharPosition2);
+					temp=info.substring(tempCharPosition2+2);
+					tempData=temp.split(",");
+					for(int j=0;j<numberOfField-2;j++) {
+						numberData[j+2]=tempData[j];
+					}
+				}
+				else {
+					temp=info.substring(tempCharPosition2+2);
+					tempData=temp.split(",");
+					for(int j=0;j<numberOfField-1;j++) {
+						numberData[j+1]=tempData[j];
+					}
+				}
+				
+			}
+			if(info.indexOf("\"")==1) {
+				tempCharPosition1=info.indexOf("\"");
+				tempCharPosition2=info.indexOf("\"",tempCharPosition1+1);
+				numberData[1]=info.substring(tempCharPosition1+1,tempCharPosition2);
+				temp=info.substring(0,tempCharPosition1-1);
+				numberData[0]=temp;
+				temp=info.substring(tempCharPosition2+2);
+				tempData=temp.split(",");
+				for(int j=0;j<numberOfField-2;j++) {
+					numberData[j+2]=tempData[j];
+				}
+			}
+		} else {
+			numberData=info.split(",");
+		}
+		return numberData;
+	}
 }
+		

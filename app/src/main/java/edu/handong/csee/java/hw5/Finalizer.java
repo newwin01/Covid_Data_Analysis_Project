@@ -15,14 +15,14 @@ import java.util.TreeMap;
 public class Finalizer {
 	
 	private LinkedHashMap<String,Integer> finalValue;
-	private ArrayList<String> csvCountryName;
+	private CovidArrayList<String> csvCountryName;
 	
 	public Finalizer(LinkedHashMap<String, Integer> value){
 		finalValue = new LinkedHashMap<String,Integer>();
 		finalValue = value;
 	}
 	
-	public Finalizer(LinkedHashMap<String, Integer> value,ArrayList<String> countryList){
+	public Finalizer(LinkedHashMap<String, Integer> value,CovidArrayList<String> countryList){
 		finalValue = new LinkedHashMap<String,Integer>();
 		finalValue = value;
 		csvCountryName = countryList;
@@ -42,7 +42,8 @@ public class Finalizer {
 	 */
 	public void printSortDataByCountryKey() {
 		LinkedHashMap<String, Integer> countryData = new LinkedHashMap<String, Integer>();
-		for(String country:csvCountryName) {
+		for(int i=0;i<csvCountryName.length();i++) {
+			String country = csvCountryName.get(i);
 			if(finalValue.get(country)!=null) {
 				countryData.put(country,finalValue.get(country));
 			}
@@ -67,7 +68,8 @@ public class Finalizer {
 	 */
 	public void printSortDataByCountryValue(){
 		HashMap<String, Integer> countryData = new HashMap<String, Integer>();
-		for(String country:csvCountryName) {
+		for(int i=0;i<csvCountryName.length();i++) {
+			String country = csvCountryName.get(i);
 			if(finalValue.get(country)!=null) {
 				countryData.put(country,finalValue.get(country));
 			}
