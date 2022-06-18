@@ -1,9 +1,14 @@
 package edu.handong.csee.java.hw5;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -59,6 +64,8 @@ public class MainRunner {
 		Options options = createOptions(); 
 		int length = 0;
 		if(parseOptions(options, args)){
+			
+			
 			if (help){
 				printHelp(options);
 				return;
@@ -76,6 +83,8 @@ public class MainRunner {
 				printHelp(options);
 				return;
 			}
+			
+			
 			else {
 				if(confirmedData!=null) {
 					data = confirmedData;
@@ -86,6 +95,8 @@ public class MainRunner {
 				}
 				exe = data.substring(data.lastIndexOf(".")+1);
 			}
+			
+			
 			if(exe.equals("zip")) {
 				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
 				int fieldNumber = 0;
@@ -140,6 +151,8 @@ public class MainRunner {
 				String[] line = null;
 				Reader in = null;
 				int i=0;
+				
+				
 				try {
 					in = new FileReader(data);
 				} catch (FileNotFoundException e) {
@@ -177,26 +190,17 @@ public class MainRunner {
 				
 				finalValue=Util.convertToHashMap(list, length);
 			}
-			else {
-				
-			}
 			
 			if(data!=null&&country==null) {
 
 				Finalizer finalizer = new Finalizer(finalValue);
 				
-				
-				System.out.println("The total number of countries: " + finalizer.printTotalCountries());
-				System.out.println("The total number of the accumulated patients until now: " + finalizer.printTotalPatient());
-				
-				if(sort) {
-					System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
-					finalizer.printSortDataByCountryValue();
-					
-				}
-				else {
-					System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
-					finalizer.printSortDataByKey();
+				if(deadData!=null) {
+					Util.printDeadResultNoCountry(finalizer, sort, output);
+				} else if (confirmedData!=null){
+					Util.printConfirmeddResultNoCountry(finalizer, sort, output);
+				} else if(recoveredData!=null) {
+					Util.printRecovereddResultNoCountry(finalizer, sort, output);
 				}
 				
 				
@@ -204,16 +208,19 @@ public class MainRunner {
 			if(data!=null&&country!=null) {
 				countryList = new CovidArrayList<String>();
 				Reader in = null;
-				int i=0;
 				String[] line = null;
 				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
 				readRunner = new ArrayList<ReadRunnableClass>();
 				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
+				
+				
 				try {
 					in = new FileReader(country);
 				} catch (FileNotFoundException e) {
 					printHelp(options);
 				}
+				
+				
 				try {
 					CSVParser parse = CSVFormat.DEFAULT.parse(in);
 						for(CSVRecord record:parse) {
@@ -241,20 +248,18 @@ public class MainRunner {
 				
 				Finalizer finalizer = new Finalizer(finalValue,countryList);
 				
-				System.out.println("The total number of countries: " + finalizer.printTotalCountries());
-				System.out.println("The total number of the accumulated patients until now: " + finalizer.printTotalPatient());
-				
-				if(sort) {
-					System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
-					finalizer.printSortDataByCountryValue();
+				if(deadData!=null) {
+					Util.printDeaddResultWithCountry(finalizer, sort, output);
+				} else if (confirmedData!=null){
+					Util.printConfirmeddResultWithCountry(finalizer, sort, output);
+				} else if(recoveredData!=null) {
+					Util.printRecovereddResultWithCountry(finalizer, sort, output);
 				}
-				else {
-					System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
-					finalizer.printSortDataByCountryKey();
-				}
+
 			}
 			
 		}
+		
 	}
 	
 	

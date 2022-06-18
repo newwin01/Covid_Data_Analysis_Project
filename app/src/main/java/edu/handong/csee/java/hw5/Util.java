@@ -1,5 +1,9 @@
 package edu.handong.csee.java.hw5;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.LinkedHashMap;
 
 /*
@@ -130,5 +134,170 @@ public class Util {
 		}
 		return appendedLine;
 	}
+	
+	public static void printDeadResultNoCountry(Finalizer finalizer,boolean sort, String output) {
+		if(output!=null) {
+			System.out.println("The result file is saved in" + output);
+			File file = new File(output);
+			try {
+				FileOutputStream fos = new FileOutputStream(file);
+				PrintStream ps = new PrintStream(fos);
+				System.setOut(ps);
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found!");
+				return;
+			}
+		}
+		
+		System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+		System.out.println("The total number of the dead patients until now: " + finalizer.printTotalPatient());
+		if(sort) {
+			System.out.println("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
+			finalizer.printSortDataByCountryValue();
+			
+		}
+		else {
+			System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+			finalizer.printSortDataByKey();
+		}
+	}
+	
+	public static void printConfirmeddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
+		if(output!=null) {
+			System.out.println("The result file is saved in" + output);
+			File file = new File(output);
+			try {
+				FileOutputStream fos = new FileOutputStream(file);
+				PrintStream ps = new PrintStream(fos);
+				System.setOut(ps);
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found!");
+				return;
+			}
+		}
+		
+		System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+		System.out.println("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
+		if(sort) {
+			System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
+			finalizer.printSortDataByCountryValue();
+			
+		}
+		else {
+			System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+			finalizer.printSortDataByKey();
+		}
+	}
+	
+	public static void printRecovereddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
+		if(output!=null) {
+			System.out.println("The result file is saved in" + output);
+			File file = new File(output);
+			try {
+				FileOutputStream fos = new FileOutputStream(file);
+				PrintStream ps = new PrintStream(fos);
+				System.setOut(ps);
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found!");
+				return;
+			}
+		}
+		
+		System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+		System.out.println("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
+		if(sort) {
+			System.out.println("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
+			finalizer.printSortDataByCountryValue();
+			
+		}
+		else {
+			System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+			finalizer.printSortDataByKey();
+		}
+	}
+	
+	public static void printDeaddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
+		if(output!=null) {
+			System.out.println("The result file is saved in" + output);
+			File file = new File(output);
+			try {
+				FileOutputStream fos = new FileOutputStream(file);
+				PrintStream ps = new PrintStream(fos);
+				System.setOut(ps);
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found!");
+				return;
+			}
+		}
+		
+		System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+		System.out.println("The total number of the dead patients until now: " + finalizer.printTotalPatient());
+		
+		if(sort) {
+			System.out.println("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
+			finalizer.printSortDataByCountryValue();
+		}
+		else {
+			System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+			finalizer.printSortDataByCountryKey();
+		}
+		
+
+	}
+	
+	public static void printRecovereddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
+		if(output!=null) {
+			System.out.println("The result file is saved in" + output);
+			File file = new File(output);
+			try {
+				FileOutputStream fos = new FileOutputStream(file);
+				PrintStream ps = new PrintStream(fos);
+				System.setOut(ps);
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found!");
+				return;
+			}
+		}
+		
+		System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+		System.out.println("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
+		
+		if(sort) {
+			System.out.println("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
+			finalizer.printSortDataByCountryValue();
+		}
+		else {
+			System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+			finalizer.printSortDataByCountryKey();
+		}
+	}
+	
+	public static void printConfirmeddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
+		if(output!=null) {
+			System.out.println("The result file is saved in" + output);
+			File file = new File(output);
+			try {
+				FileOutputStream fos = new FileOutputStream(file);
+				PrintStream ps = new PrintStream(fos);
+				System.setOut(ps);
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found!");
+				return;
+			}
+		}
+		
+		System.out.println("The total number of countries: " + finalizer.printTotalCountries());
+		System.out.println("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
+		
+		if(sort) {
+			System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
+			finalizer.printSortDataByCountryValue();
+		}
+		else {
+			System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
+			finalizer.printSortDataByCountryKey();
+		}
+	}
+	
 }
 		
