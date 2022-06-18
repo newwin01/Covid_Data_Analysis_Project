@@ -2,6 +2,9 @@ package edu.handong.csee.java.hw5;
 
 import java.util.LinkedHashMap;
 
+/*
+ * Util class has many class useful to implement Covid Data Parsing Program
+ */
 public class Util {
 	/*
 	 * class make string to integer
@@ -37,7 +40,10 @@ public class Util {
 		}
 		return fieldNum-1;
 	}
-	
+	/*
+	 * put CovidArrayList and convert into LinkedHashpMap
+	 * CovidArrayList has String Array generics
+	 */
 	public static LinkedHashMap<String,Integer> convertToHashMap(CovidArrayList<String[]> list,int length){
 		try {
 			LinkedHashMap<String, Integer> finalValue = new LinkedHashMap<String,Integer>();
@@ -59,6 +65,10 @@ public class Util {
 		}
 		return null;
 	}
+	
+	/*
+	 * convert String into String array
+	 */
 	
 	public static String[] convertToStringArray(String info,int numberOfField) {
 		String numberData[] = new String[numberOfField];
@@ -107,6 +117,18 @@ public class Util {
 			numberData=info.split(",");
 		}
 		return numberData;
+	}
+	
+	/*
+	 * get String Array and append it to String
+	 */
+	
+	public static String appendString(String[] line) {
+		String appendedLine = line[0];
+		for(int i=1;i<line.length;i++) {
+			appendedLine=appendedLine+", " + line[i];
+		}
+		return appendedLine;
 	}
 }
 		

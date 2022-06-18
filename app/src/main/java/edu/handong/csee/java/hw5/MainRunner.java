@@ -5,9 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -36,7 +39,8 @@ public class MainRunner {
 	private boolean help;
 	private CovidArrayList<String> countryList;
 	private CovidArrayList<String[]> list;
-	LinkedHashMap<String, Integer> finalValue;
+	private ArrayList<ReadRunnableClass> readRunner;
+	private LinkedHashMap<String, Integer> finalValue;
 /*
  * main class to receive arguments and create MainRunner instance 
  */
@@ -45,6 +49,8 @@ public class MainRunner {
 		runner.run(args);
 
 	}
+	
+	
 	private void run(String args[]) {
 		list = new CovidArrayList<String[]>();
 		finalValue = new LinkedHashMap<String,Integer>();
@@ -81,8 +87,13 @@ public class MainRunner {
 				exe = data.substring(data.lastIndexOf(".")+1);
 			}
 			if(exe.equals("zip")) {
+				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
 				int fieldNumber = 0;
 				int i=0;
+				readRunner = new ArrayList<ReadRunnableClass>();
+				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
+				
+				
 				@SuppressWarnings("resource")
 				ZipFile zipFile = new ZipFile(data);
 				try {
@@ -96,7 +107,9 @@ public class MainRunner {
 							fieldNumber=line.split(",").length;
 						}
 						else {
-							list.add(Util.convertToStringArray(line, fieldNumber));
+							Runnable worker = new ReadRunnableClass(Util.convertToStringArray(line, fieldNumber));
+							executor.execute(worker);
+							readRunner.add((ReadRunnableClass)worker);
 						}
 						i++;
 					}
@@ -106,9 +119,24 @@ public class MainRunner {
 					e.printStackTrace();
 				}
 				
+				
+				executor.shutdown();
+				
+				while(!executor.isTerminated()) {
+				}
+				
+				for(ReadRunnableClass runner:readRunner) {
+					list.add(runner.returnStringArray());
+				}
+				
 				finalValue=Util.convertToHashMap(list,fieldNumber);
 			}
+			
+			
 			else if(exe.equals("csv")) {
+				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
+				readRunner = new ArrayList<ReadRunnableClass>();
+				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
 				String[] line = null;
 				Reader in = null;
 				int i=0;
@@ -125,7 +153,9 @@ public class MainRunner {
 								for(int j=0;j<record.size();j++) {
 									line[j]=record.get(j);
 								}
-								list.add(line);
+								Runnable worker = new ReadRunnableClass(line);
+								executor.execute(worker);
+								readRunner.add((ReadRunnableClass)worker);
 							}
 							i++;
 							length=record.size();
@@ -135,7 +165,20 @@ public class MainRunner {
 					return;
 				}
 				
+				
+				executor.shutdown(); // no new tasks will be accepted.
+				
+				while (!executor.isTerminated()) {
+		        }
+				
+				for(ReadRunnableClass runner:readRunner) {
+					list.add(runner.returnStringArray());
+				}
+				
 				finalValue=Util.convertToHashMap(list, length);
+			}
+			else {
+				
 			}
 			
 			if(data!=null&&country==null) {
@@ -162,7 +205,10 @@ public class MainRunner {
 				countryList = new CovidArrayList<String>();
 				Reader in = null;
 				int i=0;
-				String line = null;
+				String[] line = null;
+				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
+				readRunner = new ArrayList<ReadRunnableClass>();
+				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
 				try {
 					in = new FileReader(country);
 				} catch (FileNotFoundException e) {
@@ -171,13 +217,28 @@ public class MainRunner {
 				try {
 					CSVParser parse = CSVFormat.DEFAULT.parse(in);
 						for(CSVRecord record:parse) {
-							line = record.get(0);
-							countryList.add(line);
+							line =  new String[record.size()];
+							for(int j=0;j<record.size();j++) {
+								line[j]=record.get(j).trim();
+							}
+							Runnable worker = new ReadRunnableClass(line);
+							executor.execute(worker);
+							readRunner.add((ReadRunnableClass)worker);
 						}
 				} catch (IOException e) {
 					printHelp(options);
 					return;
 				}
+				
+				executor.shutdown(); // no new tasks will be accepted.
+				
+				while (!executor.isTerminated()) {
+		        }
+				
+				for(ReadRunnableClass runner:readRunner) {
+					countryList.add(Util.appendString(runner.returnStringArray()));
+				}
+				
 				Finalizer finalizer = new Finalizer(finalValue,countryList);
 				
 				System.out.println("The total number of countries: " + finalizer.printTotalCountries());
