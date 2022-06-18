@@ -27,3 +27,8 @@ hs_err_pid*
 
 # Ignore Gradle build output directory
 build
+/.gitattributes
+/.project
+/time_series_covid19_confirmed_global.csv
+/time_series_covid19_deaths_global.csv
+/time_series_covid19_recovered_global.csv

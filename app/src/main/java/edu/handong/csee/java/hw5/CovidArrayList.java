@@ -1,6 +1,9 @@
 package edu.handong.csee.java.hw5;
 
 import java.util.HashMap;
+/*
+ * CovidArrayList based on Linked List, use generic
+ */
 
 public class CovidArrayList<E>  {
 	
@@ -16,10 +19,16 @@ public class CovidArrayList<E>  {
 		}
 	}
 	
+	/*
+	 * constructor, set head as null
+	 */
 	public CovidArrayList(){
 		head=null;
 	}
 	
+	/*
+	 * shows the list of data in CovidArrayList
+	 */
 	public void showList() {
 		ListNode position = head;
 		while(position != null) {
@@ -27,7 +36,9 @@ public class CovidArrayList<E>  {
 			position = position.link;
 		}
 	}
-	
+	/*
+	 * return the length of CovidArrayList
+	 */
 	public int length() {
 		int count = 0;
 		ListNode position = head;
@@ -38,6 +49,9 @@ public class CovidArrayList<E>  {
 		return count;
 	}
 	
+	/*
+	 * put new data on the end of CovidArrayList
+	 */
 	
 	public void add(E addData) {
 		ListNode newNode = new ListNode(addData, null);
@@ -51,7 +65,9 @@ public class CovidArrayList<E>  {
 		}
 	}
 	
-	
+	/*
+	 * return true if there is data in the CovidArrayList
+	 */
 	public boolean contain(E target) {
 		return find(target) != null;
 	}
@@ -69,7 +85,9 @@ public class CovidArrayList<E>  {
 		}
 		return position;
 	}
-	
+	/*
+	 * get the data of index
+	 */
 	public E get(int index) {
 		ListNode newNode = head;
 		for(int i=0;i<index;i++) {

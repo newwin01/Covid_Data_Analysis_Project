@@ -135,6 +135,10 @@ public class Util {
 		return appendedLine;
 	}
 	
+	/*
+	 * print the Result of dead data that countryList is not given, considering options 
+	 */
+	
 	public static void printDeadResultNoCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
 			System.out.println("The result file is saved in" + output);
@@ -161,6 +165,9 @@ public class Util {
 			finalizer.printSortDataByKey();
 		}
 	}
+	/*
+	 * print the Result of confirmed data that countryList is not given, considering options 
+	 */
 	
 	public static void printConfirmeddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
@@ -189,6 +196,9 @@ public class Util {
 		}
 	}
 	
+	/*
+	 * print the Result of recovered data that countryList is not given, considering options 
+	 */
 	public static void printRecovereddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
 			System.out.println("The result file is saved in" + output);
@@ -215,7 +225,9 @@ public class Util {
 			finalizer.printSortDataByKey();
 		}
 	}
-	
+	/*
+	 * print the Result of dead data that countryList is given, considering options 
+	 */
 	public static void printDeaddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
 			System.out.println("The result file is saved in" + output);
@@ -241,9 +253,11 @@ public class Util {
 			System.out.println("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 			finalizer.printSortDataByCountryKey();
 		}
-		
-
 	}
+	
+	/*
+	 * print the Result of recovered data that countryList is given, considering options 
+	 */
 	
 	public static void printRecovereddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
@@ -271,6 +285,11 @@ public class Util {
 			finalizer.printSortDataByCountryKey();
 		}
 	}
+	
+	/*
+	 * print the Result of confirmed data that countryList is given, considering options 
+	 */
+	
 	
 	public static void printConfirmeddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {

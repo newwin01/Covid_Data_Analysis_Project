@@ -16,12 +16,16 @@ public class Finalizer {
 	
 	private LinkedHashMap<String,Integer> finalValue;
 	private CovidArrayList<String> csvCountryName;
-	
+	/*
+	 * constructor receive LinkedHashMap to organize the value
+	 */
 	public Finalizer(LinkedHashMap<String, Integer> value){
 		finalValue = new LinkedHashMap<String,Integer>();
 		finalValue = value;
 	}
-	
+	/*
+	 * constructor receive LinkedHashMap and countryList to organize the value 
+	 */
 	public Finalizer(LinkedHashMap<String, Integer> value,CovidArrayList<String> countryList){
 		finalValue = new LinkedHashMap<String,Integer>();
 		finalValue = value;
@@ -82,11 +86,15 @@ public class Finalizer {
 		
 	}
 	
-	
+	/*
+	 * print the total country in the data
+	 */
 	public int printTotalCountries() {
 		return finalValue.size();
 	}
-	
+	/*
+	 * print the total patient in the data
+	 */
 	public int printTotalPatient() {
 		int total=0;
 		for(Entry<String, Integer> info:finalValue.entrySet()) {

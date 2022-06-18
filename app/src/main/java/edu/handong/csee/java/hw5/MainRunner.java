@@ -47,7 +47,8 @@ public class MainRunner {
 	private ArrayList<ReadRunnableClass> readRunner;
 	private LinkedHashMap<String, Integer> finalValue;
 /*
- * main class to receive arguments and create MainRunner instance 
+ * main class to receive arguments and create MainRunner instance,
+ * receive the options and perform right sequence
  */
 	public static void main(String[] args) {
 		MainRunner runner = new MainRunner();
@@ -65,7 +66,7 @@ public class MainRunner {
 		int length = 0;
 		if(parseOptions(options, args)){
 			
-			
+			//to find out option is correct
 			if (help){
 				printHelp(options);
 				return;
