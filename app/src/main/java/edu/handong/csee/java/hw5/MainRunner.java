@@ -1,14 +1,9 @@
 package edu.handong.csee.java.hw5;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -250,7 +245,7 @@ public class MainRunner {
 				Finalizer finalizer = new Finalizer(finalValue,countryList);
 				
 				if(deadData!=null) {
-					Util.printDeaddResultWithCountry(finalizer, sort, output);
+					Util.printDeadResultWithCountry(finalizer, sort, output);
 				} else if (confirmedData!=null){
 					Util.printConfirmeddResultWithCountry(finalizer, sort, output);
 				} else if(recoveredData!=null) {

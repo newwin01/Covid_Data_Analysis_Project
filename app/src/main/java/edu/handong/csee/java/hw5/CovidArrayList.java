@@ -1,10 +1,5 @@
 package edu.handong.csee.java.hw5;
 
-import java.util.HashMap;
-/*
- * CovidArrayList based on Linked List, use generic
- */
-
 public class CovidArrayList<E>  {
 	
 	private ListNode head;
