@@ -376,8 +376,6 @@ public class Util {
 	/*
 	 * print the Result of confirmed data that countryList is given, considering options 
 	 */
-	
-	
 	public static void printConfirmeddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
 			if(sort) {
