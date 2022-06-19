@@ -1,5 +1,6 @@
 package edu.handong.csee.java.hw5;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -52,6 +53,7 @@ public class MainRunner {
 	}
 	
 	
+	@SuppressWarnings("resource")
 	private void run(String args[]) {
 		list = new CovidArrayList<String[]>();
 		finalValue = new LinkedHashMap<String,Integer>();
@@ -92,7 +94,7 @@ public class MainRunner {
 				exe = data.substring(data.lastIndexOf(".")+1);
 			}
 			
-			
+			//receive data that is zip file using external library
 			if(exe.equals("zip")) {
 				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
 				int fieldNumber = 0;
@@ -101,12 +103,10 @@ public class MainRunner {
 				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
 				
 				
-				@SuppressWarnings("resource")
 				ZipFile zipFile = new ZipFile(data);
 				try {
 					List<FileHeader> unzipFile = zipFile.getFileHeaders();
 					InputStream inputStream = zipFile.getInputStream(unzipFile.get(0));
-					@SuppressWarnings("resource")
 					Scanner scannerFile = new Scanner(inputStream);
 					while (scannerFile.hasNextLine ()) {
 						String line = scannerFile.nextLine ();
@@ -139,7 +139,7 @@ public class MainRunner {
 				finalValue=Util.convertToHashMap(list,fieldNumber);
 			}
 			
-			
+			//receive data that is csv file 
 			else if(exe.equals("csv")) {
 				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
 				readRunner = new ArrayList<ReadRunnableClass>();
@@ -187,20 +187,52 @@ public class MainRunner {
 				finalValue=Util.convertToHashMap(list, length);
 			}
 			
+			
+			//parse output data, use defined constant to support any operating system
+			String fileName = null;
+			String fileRoot = null;
+			if(output!=null) {
+				if(output.contains(File.separator)){
+					fileName = output.substring(output.lastIndexOf(File.separator)+1,output.lastIndexOf("."));
+					fileRoot = output.substring(0,output.lastIndexOf(File.separator));
+				} else {
+					fileName = output.substring(0,output.lastIndexOf("."));
+				}
+			} 
+			
+			
+			//if file root exist, move file to new folder
+			if(fileRoot!=null) {
+				File file = new File(fileRoot);
+				if (!file.exists()) {   
+					try {
+						file.mkdirs();
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+				}
+				fileName=fileRoot+File.separator+fileName;
+			}
+			
+			//if there is no country list
 			if(data!=null&&country==null) {
 
 				Finalizer finalizer = new Finalizer(finalValue);
 				
 				if(deadData!=null) {
-					Util.printDeadResultNoCountry(finalizer, sort, output);
+					Util.printDeadResultNoCountry(finalizer, sort, fileName);
 				} else if (confirmedData!=null){
-					Util.printConfirmeddResultNoCountry(finalizer, sort, output);
+					Util.printConfirmeddResultNoCountry(finalizer, sort, fileName);
 				} else if(recoveredData!=null) {
-					Util.printRecovereddResultNoCountry(finalizer, sort, output);
+					Util.printRecovereddResultNoCountry(finalizer, sort, fileName);
+				}
+				if(output!=null) {
+					System.out.println("The result file saved in "+output);
 				}
 				
-				
 			}
+			
+			//if there is country list
 			if(data!=null&&country!=null) {
 				countryList = new CovidArrayList<String>();
 				Reader in = null;
@@ -216,7 +248,7 @@ public class MainRunner {
 					printHelp(options);
 				}
 				
-				
+				//use thread to read country list
 				try {
 					CSVParser parse = CSVFormat.DEFAULT.parse(in);
 						for(CSVRecord record:parse) {
@@ -245,19 +277,35 @@ public class MainRunner {
 				Finalizer finalizer = new Finalizer(finalValue,countryList);
 				
 				if(deadData!=null) {
-					Util.printDeadResultWithCountry(finalizer, sort, output);
+					Util.printDeadResultWithCountry(finalizer, sort, fileName);
 				} else if (confirmedData!=null){
-					Util.printConfirmeddResultWithCountry(finalizer, sort, output);
+					Util.printConfirmeddResultWithCountry(finalizer, sort, fileName);
 				} else if(recoveredData!=null) {
-					Util.printRecovereddResultWithCountry(finalizer, sort, output);
+					Util.printRecovereddResultWithCountry(finalizer, sort, fileName);
+				}
+				if(output!=null) {
+					System.out.println("The result file saved in "+output);
 				}
 
 			}
 			
+			//if file extension is zip, make as zip file, delete existing file
+			if(output!=null) {
+				String zipExe = output.substring(output.lastIndexOf(".")+1);
+				if(zipExe.equals("zip")) {
+					try {
+						new ZipFile(fileName+".zip").addFile(fileName+".csv");
+						File file = new File(fileName+".csv");
+						file.delete();
+					} catch (ZipException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 		
 	}
-	
+	//options
 	
 	private Options createOptions() {
 		Options options = new Options();

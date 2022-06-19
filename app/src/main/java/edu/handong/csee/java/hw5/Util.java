@@ -6,8 +6,6 @@ import java.util.LinkedHashMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import net.lingala.zip4j.ZipFile;
-
 
 /*
  * Util class has many class useful to implement Covid Data Parsing Program
@@ -147,21 +145,20 @@ public class Util {
 		if(output!=null) {
 			if(sort) {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
 					finalizer.printSortDataByValue(printer, output);
 				} catch (IOException e) {
+					e.printStackTrace();
 					System.out.println("File Error!");
 					return;
 				}
 			} else {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
@@ -172,7 +169,6 @@ public class Util {
 					return;
 				}
 			}
-			
 		}
 		else {
 			System.out.println("The total number of countries: " + finalizer.printTotalCountries());
@@ -197,8 +193,7 @@ public class Util {
 			
 			if(sort) {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
@@ -210,8 +205,7 @@ public class Util {
 				}
 			} else {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
@@ -247,8 +241,7 @@ public class Util {
 		if(output!=null) {
 			if(sort) {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
@@ -260,8 +253,7 @@ public class Util {
 				}
 			} else {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
@@ -294,8 +286,7 @@ public class Util {
 		if(output!=null) {
 			if(sort) {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
@@ -307,8 +298,7 @@ public class Util {
 				}
 			} else {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
@@ -344,8 +334,7 @@ public class Util {
 		if(output!=null) {
 			if(sort) {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
@@ -357,8 +346,7 @@ public class Util {
 				}
 			} else {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
@@ -395,8 +383,7 @@ public class Util {
 		if(output!=null) {
 			if(sort) {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
@@ -408,8 +395,7 @@ public class Util {
 				}
 			} else {
 				try {
-					System.out.println("The result file is saved in " + output);
-					FileWriter out = new FileWriter(output);
+					FileWriter out = new FileWriter(output+".csv");
 					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
