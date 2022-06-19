@@ -152,7 +152,6 @@ public class Finalizer {
 		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(countryData.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
-			System.out.println("- "+info.getKey()+ ": " + info.getValue());
 			printer.printRecord("- "+info.getKey()+ ": " + info.getValue());
 		}
 		printer.flush();

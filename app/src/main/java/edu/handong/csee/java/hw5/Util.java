@@ -189,7 +189,6 @@ public class Util {
 	
 	public static void printConfirmeddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
-			
 			if(sort) {
 				try {
 					FileWriter out = new FileWriter(output+".csv");
