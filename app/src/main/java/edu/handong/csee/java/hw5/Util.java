@@ -268,7 +268,7 @@ public class Util {
 			System.out.println("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
 			if(sort) {
 				System.out.println("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
-				finalizer.printSortDataByCountryValue();
+				finalizer.printSortDataByValue();
 				
 			}
 			else {
