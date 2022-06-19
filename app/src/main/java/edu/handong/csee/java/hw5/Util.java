@@ -152,9 +152,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
 					finalizer.printSortDataByValue(printer, output);
 				} catch (IOException e) {
-					e.printStackTrace();
 					System.out.println("File Error!");
-					return;
+					System.exit(0);
 				}
 			} else {
 				try {
@@ -200,8 +199,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
 					finalizer.printSortDataByValue(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			} else {
 				try {
@@ -212,8 +211,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 					finalizer.printSortDataByKey(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			}
 			
@@ -224,7 +223,7 @@ public class Util {
 			System.out.println("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
 			if(sort) {
 				System.out.println("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
-				finalizer.printSortDataByCountryValue();
+				finalizer.printSortDataByValue();
 				
 			}
 			else {
@@ -248,8 +247,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
 					finalizer.printSortDataByValue(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			} else {
 				try {
@@ -260,8 +259,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 					finalizer.printSortDataByKey(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			}
 		}
@@ -293,8 +292,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
 					finalizer.printSortDataByCountryValue(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			} else {
 				try {
@@ -305,8 +304,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 					finalizer.printSortDataByCountryKey(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			}
 			
@@ -341,8 +340,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
 					finalizer.printSortDataByCountryValue(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			} else {
 				try {
@@ -353,8 +352,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 					finalizer.printSortDataByCountryKey(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			}
 			
@@ -390,8 +389,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
 					finalizer.printSortDataByCountryValue(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			} else {
 				try {
@@ -402,8 +401,8 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 					finalizer.printSortDataByCountryKey(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					return;
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			}
 			

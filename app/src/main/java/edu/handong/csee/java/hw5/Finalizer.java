@@ -68,28 +68,30 @@ public class Finalizer {
 	 * print sorted selected country data by key
 	 */
 	public void printSortDataByCountryKey() {
-		LinkedHashMap<String, Integer> countryData = new LinkedHashMap<String, Integer>();
+		HashMap<String, Integer> countryData = new HashMap<String, Integer>();
 		for(int i=0;i<csvCountryName.length();i++) {
 			String country = csvCountryName.get(i);
 			if(finalValue.get(country)!=null) {
 				countryData.put(country,finalValue.get(country));
 			}
-			
 		}
-		for(Entry<String, Integer> info:countryData.entrySet()) {
+		TreeMap<String,Integer> map = new TreeMap<String,Integer>(countryData);
+		for(Entry<String, Integer> info:map.entrySet()) {
 			System.out.println("- "+ info.getKey()+ ": " + info.getValue());
 		}
 	}
+	
+	
 	public void printSortDataByCountryKey(CSVPrinter printer, String output) throws IOException{
-		LinkedHashMap<String, Integer> countryData = new LinkedHashMap<String, Integer>();
+		HashMap<String, Integer> countryData = new HashMap<String, Integer>();
 		for(int i=0;i<csvCountryName.length();i++) {
 			String country = csvCountryName.get(i);
 			if(finalValue.get(country)!=null) {
 				countryData.put(country,finalValue.get(country));
 			}
-			
 		}
-		for(Entry<String, Integer> info:countryData.entrySet()) {
+		TreeMap<String,Integer> map = new TreeMap<String,Integer>(countryData);
+		for(Entry<String, Integer> info:map.entrySet()) {
 			printer.printRecord("- "+info.getKey()+ ": " + info.getValue());
 		}
 		printer.flush();
@@ -150,6 +152,7 @@ public class Finalizer {
 		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(countryData.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
+			System.out.println("- "+info.getKey()+ ": " + info.getValue());
 			printer.printRecord("- "+info.getKey()+ ": " + info.getValue());
 		}
 		printer.flush();
