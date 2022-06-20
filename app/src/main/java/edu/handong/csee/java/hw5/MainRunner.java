@@ -106,6 +106,10 @@ public class MainRunner {
 				ZipFile zipFile = new ZipFile(data);
 				try {
 					List<FileHeader> unzipFile = zipFile.getFileHeaders();
+					if(unzipFile.isEmpty()) {
+						printHelp(options);
+						System.exit(0);
+					}
 					InputStream inputStream = zipFile.getInputStream(unzipFile.get(0));
 					Scanner scannerFile = new Scanner(inputStream);
 					while (scannerFile.hasNextLine ()) {
@@ -121,9 +125,11 @@ public class MainRunner {
 						i++;
 					}
 				} catch (ZipException e) {
-					e.printStackTrace();
+					printHelp(options);
+					System.exit(0);
 				} catch (IOException e) {
-					e.printStackTrace();
+					printHelp(options);
+					System.exit(0);
 				}
 				
 				
@@ -153,6 +159,7 @@ public class MainRunner {
 					in = new FileReader(data);
 				} catch (FileNotFoundException e) {
 					printHelp(options);
+					System.exit(0);
 				}
 				try {
 					CSVParser parse = CSVFormat.DEFAULT.parse(in);
