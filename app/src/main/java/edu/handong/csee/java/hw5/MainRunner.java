@@ -59,9 +59,9 @@ public class MainRunner {
 			String fileName = null;
 			String fileRoot = null;
 			if(output!=null) {
-				if(output.contains(File.separator)){
-					fileName = output.substring(output.lastIndexOf(File.separator)+1,output.lastIndexOf("."));
-					fileRoot = output.substring(0,output.lastIndexOf(File.separator));
+				if(output.contains("/")){
+					fileName = output.substring(output.lastIndexOf("/")+1,output.lastIndexOf("."));
+					fileRoot = output.substring(0,output.lastIndexOf("/"));
 				} else {
 					fileName = output.substring(0,output.lastIndexOf("."));
 				}
@@ -78,7 +78,7 @@ public class MainRunner {
 						e.printStackTrace();
 					}
 				}
-				fileName=fileRoot+File.separator+fileName;
+				fileName=fileRoot+"/"+fileName;
 			}
 			
 			fileList = new LinkedHashMap<String,String>();
@@ -95,7 +95,7 @@ public class MainRunner {
 				fileList.put("country",country);
 			}
 			
-			
+			//use thread to read data at the same time
 			ArrayList<FileRunnableClass> readRunner = new ArrayList<FileRunnableClass>();
 			ExecutorService executor = Executors.newFixedThreadPool(4);
 			
