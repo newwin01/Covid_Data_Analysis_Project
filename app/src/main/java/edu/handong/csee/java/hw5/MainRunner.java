@@ -81,7 +81,17 @@ public class MainRunner {
 			}
 			
 			
-			
+			if(fileRoot!=null) {
+				File file = new File(fileRoot);
+				if (!file.exists()) {   
+					try {
+						file.mkdirs();
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+				}
+				fileName=fileRoot+File.separator+fileName;
+			}
 			
 			fileList = new LinkedHashMap<String,String>();
 			if(confirmedData!=null) {
@@ -190,17 +200,7 @@ public class MainRunner {
 			}
 			
 			//if file root exist, move file to new folder
-			if(fileRoot!=null) {
-				File file = new File(fileRoot);
-				if (!file.exists()) {   
-					try {
-						file.mkdirs();
-					}catch (Exception e){
-						e.printStackTrace();
-					}
-				}
-				fileName=fileRoot+File.separator+fileName;
-			}
+			
 			
 			//if there is no country list
 			//if file extension is zip, make as zip file, delete existing file
