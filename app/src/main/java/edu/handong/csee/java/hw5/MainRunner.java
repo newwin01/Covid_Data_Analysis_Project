@@ -38,10 +38,13 @@ public class MainRunner {
 	private String output;
 	private boolean sort;
 	private boolean help;
+	private LinkedHashMap<String, String> fileList;
 	private CovidArrayList<String> countryList;
-	private CovidArrayList<String[]> list;
-	private ArrayList<ReadRunnableClass> readRunner;
-	private LinkedHashMap<String, Integer> finalValue;
+	private LinkedHashMap<String, LinkedHashMap<String, Integer>> finalList;
+	private LinkedHashMap<String, Integer> finalValue1;
+	private LinkedHashMap<String, Integer> finalValue2;
+	private LinkedHashMap<String, Integer> finalValue3;
+	
 /*
  * main class to receive arguments and create MainRunner instance,
  * receive the options and perform right sequence
@@ -55,12 +58,8 @@ public class MainRunner {
 	
 	@SuppressWarnings("resource")
 	private void run(String args[]) {
-		list = new CovidArrayList<String[]>();
-		finalValue = new LinkedHashMap<String,Integer>();
-		String data = null;
 		String exe;
 		Options options = createOptions(); 
-		int length = 0;
 		if(parseOptions(options, args)){
 			
 			//to find out option is correct
@@ -68,134 +67,7 @@ public class MainRunner {
 				printHelp(options);
 				return;
 			}
-			if(confirmedData==null&&recoveredData==null&&deadData==null) {
-				printHelp(options);
-				return; 
-			} else if(confirmedData!=null&&recoveredData!=null) {
-				printHelp(options);
-				return;
-			} else if(confirmedData!=null&&deadData!=null) {
-				printHelp(options);
-				return;
-			} else if(recoveredData!=null&&deadData!=null) {
-				printHelp(options);
-				return;
-			}
 			
-			
-			else {
-				if(confirmedData!=null) {
-					data = confirmedData;
-				} else if(recoveredData!=null) {
-					data = recoveredData;
-				} else if(deadData!=null) {
-					data = deadData;
-				}
-				exe = data.substring(data.lastIndexOf(".")+1);
-			}
-			
-			//receive data that is zip file using external library
-			if(exe.equals("zip")) {
-				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
-				int fieldNumber = 0;
-				int i=0;
-				readRunner = new ArrayList<ReadRunnableClass>();
-				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
-				
-				
-				ZipFile zipFile = new ZipFile(data);
-				try {
-					List<FileHeader> unzipFile = zipFile.getFileHeaders();
-					if(unzipFile.isEmpty()) {
-						printHelp(options);
-						System.exit(0);
-					}
-					InputStream inputStream = zipFile.getInputStream(unzipFile.get(0));
-					Scanner scannerFile = new Scanner(inputStream);
-					while (scannerFile.hasNextLine ()) {
-						String line = scannerFile.nextLine ();
-						if(i==0) {
-							fieldNumber=line.split(",").length;
-						}
-						else {
-							Runnable worker = new ReadRunnableClass(Util.convertToStringArray(line, fieldNumber));
-							executor.execute(worker);
-							readRunner.add((ReadRunnableClass)worker);
-						}
-						i++;
-					}
-				} catch (ZipException e) {
-					printHelp(options);
-					System.exit(0);
-				} catch (IOException e) {
-					printHelp(options);
-					System.exit(0);
-				}
-				
-				
-				executor.shutdown();
-				
-				while(!executor.isTerminated()) {
-				}
-				
-				for(ReadRunnableClass runner:readRunner) {
-					list.add(runner.returnStringArray());
-				}
-				
-				finalValue=Util.convertToHashMap(list,fieldNumber);
-			}
-			
-			//receive data that is csv file 
-			else if(exe.equals("csv")) {
-				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
-				readRunner = new ArrayList<ReadRunnableClass>();
-				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
-				String[] line = null;
-				Reader in = null;
-				int i=0;
-				
-				
-				try {
-					in = new FileReader(data);
-				} catch (FileNotFoundException e) {
-					printHelp(options);
-					System.exit(0);
-				}
-				try {
-					CSVParser parse = CSVFormat.DEFAULT.parse(in);
-						for(CSVRecord record:parse) {
-							if(i!=0) {
-								line =  new String[record.size()];
-								for(int j=0;j<record.size();j++) {
-									line[j]=record.get(j);
-								}
-								Runnable worker = new ReadRunnableClass(line);
-								executor.execute(worker);
-								readRunner.add((ReadRunnableClass)worker);
-							}
-							i++;
-							length=record.size();
-						}
-				} catch (IOException e) {
-					printHelp(options);
-					return;
-				}
-				
-				
-				executor.shutdown(); // no new tasks will be accepted.
-				
-				while (!executor.isTerminated()) {
-		        }
-				
-				for(ReadRunnableClass runner:readRunner) {
-					list.add(runner.returnStringArray());
-				}
-				
-				finalValue=Util.convertToHashMap(list, length);
-			}
-			
-			
-			//parse output data, use defined constant to support any operating system
 			String fileName = null;
 			String fileRoot = null;
 			if(output!=null) {
@@ -205,8 +77,117 @@ public class MainRunner {
 				} else {
 					fileName = output.substring(0,output.lastIndexOf("."));
 				}
-			} 
+				System.out.println("The result file saved in "+ output);
+			}
 			
+			
+			
+			
+			fileList = new LinkedHashMap<String,String>();
+			if(confirmedData!=null) {
+				fileList.put("con", confirmedData);
+			}
+			if(deadData!=null) {
+				fileList.put("dead", deadData);
+			}
+			if(recoveredData!=null) {
+				fileList.put("rec", recoveredData);
+			}
+			if(country!=null) {
+				fileList.put("country",country);
+			}
+			
+			
+			ArrayList<FileRunnableClass> readRunner = new ArrayList<FileRunnableClass>();
+			ExecutorService executor = Executors.newFixedThreadPool(4);
+			
+			
+			for(String data1:fileList.keySet()) {
+				String data = fileList.get(data1);
+				exe = data.substring(data.lastIndexOf(".")+1);
+				LinkedHashMap<String,LinkedHashMap<String, Integer>> value = new LinkedHashMap<String,LinkedHashMap<String, Integer>>();
+				if(exe.equals("zip")) {
+					value.put(data1, ReadFile.readZipFile(options, data));
+					Runnable worker = new FileRunnableClass(value);
+					executor.execute(worker);
+					readRunner.add((FileRunnableClass)worker);
+				}
+				else if(exe.equals("csv")) {
+					if(data.equals(country)) {
+						Runnable worker = new FileRunnableClass(ReadFile.readCSVCountryFile(data));
+						executor.execute(worker);
+						readRunner.add((FileRunnableClass)worker);
+					} else { 
+						value.put(data1, ReadFile.readCSVFile(options, data));
+						Runnable worker = new FileRunnableClass(value);
+						executor.execute(worker);
+						readRunner.add((FileRunnableClass)worker);
+					}
+				}
+			}
+			
+			executor.shutdown();
+			
+			while(!executor.isTerminated()) {
+			}
+			
+			
+			finalList = new LinkedHashMap<String,LinkedHashMap<String, Integer>> ();
+			for(FileRunnableClass runner:readRunner) {
+				if(runner.returnHashMap()!=null) {
+					finalList = runner.returnHashMap();
+					if(runner.returnHashMap().containsKey("con")) {
+						finalValue1 = finalList.get("con");
+					}
+				
+					else if(runner.returnHashMap().containsKey("dead")) {
+						finalValue2 = finalList.get("dead");
+					}
+					else if(runner.returnHashMap().containsKey("rec")) {
+						finalValue3 = finalList.get("rec");
+					}
+				}
+				else {
+					countryList = runner.returnList();
+				}
+			}
+			//delete file if older file exist
+			File fileExistance = new File(fileName+".csv");
+			if(fileExistance.exists()) {
+				fileExistance.delete();
+			}
+			
+			if(finalValue1!=null) {//confirmed 
+				if(country==null) {
+					Finalizer finalyzer = new Finalizer(finalValue1);
+					Util.printConfirmeddResultNoCountry(finalyzer, sort, fileName);
+				}
+				else {
+					Finalizer finalyzer = new Finalizer(finalValue1,countryList);
+					Util.printConfirmeddResultWithCountry(finalyzer, sort, fileName);
+				}
+			}
+			if(finalValue2!=null) {//dead
+				if(country==null) {
+					Finalizer finalyzer = new Finalizer(finalValue2);
+					Util.printDeadResultNoCountry(finalyzer, sort, fileName);
+				}
+				else {
+					Finalizer finalyzer = new Finalizer(finalValue2,countryList);
+					Util.printDeadResultWithCountry(finalyzer, sort, fileName);
+				}
+			}
+			
+			if(finalValue3!=null) {//rec
+				if(country==null) {
+					Finalizer finalyzer = new Finalizer(finalValue3);
+					Util.printRecovereddResultNoCountry(finalyzer, sort, fileName);
+				}
+				else {
+					Finalizer finalyzer = new Finalizer(finalValue3,countryList);
+					Util.printRecovereddResultWithCountry(finalyzer, sort, fileName);
+				}
+			}
 			
 			//if file root exist, move file to new folder
 			if(fileRoot!=null) {
@@ -222,80 +203,6 @@ public class MainRunner {
 			}
 			
 			//if there is no country list
-			if(data!=null&&country==null) {
-
-				Finalizer finalizer = new Finalizer(finalValue);
-				
-				if(deadData!=null) {
-					Util.printDeadResultNoCountry(finalizer, sort, fileName);
-				} else if (confirmedData!=null){
-					Util.printConfirmeddResultNoCountry(finalizer, sort, fileName);
-				} else if(recoveredData!=null) {
-					Util.printRecovereddResultNoCountry(finalizer, sort, fileName);
-				}
-				if(output!=null) {
-					System.out.println("The result file saved in "+output);
-				}
-				
-			}
-			
-			//if there is country list
-			if(data!=null&&country!=null) {
-				countryList = new CovidArrayList<String>();
-				Reader in = null;
-				String[] line = null;
-				int numOfCoresInMyCPU = Runtime.getRuntime().availableProcessors();
-				readRunner = new ArrayList<ReadRunnableClass>();
-				ExecutorService executor = Executors.newFixedThreadPool(numOfCoresInMyCPU);
-				
-				
-				try {
-					in = new FileReader(country);
-				} catch (FileNotFoundException e) {
-					printHelp(options);
-				}
-				
-				//use thread to read country list
-				try {
-					CSVParser parse = CSVFormat.DEFAULT.parse(in);
-						for(CSVRecord record:parse) {
-							line =  new String[record.size()];
-							for(int j=0;j<record.size();j++) {
-								line[j]=record.get(j).trim();
-							}
-							Runnable worker = new ReadRunnableClass(line);
-							executor.execute(worker);
-							readRunner.add((ReadRunnableClass)worker);
-						}
-				} catch (IOException e) {
-					printHelp(options);
-					return;
-				}
-				
-				executor.shutdown(); // no new tasks will be accepted.
-				
-				while (!executor.isTerminated()) {
-		        }
-				
-				for(ReadRunnableClass runner:readRunner) {
-					countryList.add(Util.appendString(runner.returnStringArray()));
-				}
-				
-				Finalizer finalizer = new Finalizer(finalValue,countryList);
-				
-				if(deadData!=null) {
-					Util.printDeadResultWithCountry(finalizer, sort, fileName);
-				} else if (confirmedData!=null){
-					Util.printConfirmeddResultWithCountry(finalizer, sort, fileName);
-				} else if(recoveredData!=null) {
-					Util.printRecovereddResultWithCountry(finalizer, sort, fileName);
-				}
-				if(output!=null) {
-					System.out.println("The result file saved in "+output);
-				}
-
-			}
-			
 			//if file extension is zip, make as zip file, delete existing file
 			if(output!=null) {
 				String zipExe = output.substring(output.lastIndexOf(".")+1);

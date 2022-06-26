@@ -1,7 +1,12 @@
 package edu.handong.csee.java.hw5;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -143,10 +148,27 @@ public class Util {
 	
 	public static void printDeadResultNoCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
+			File file = new File(output+".csv");
+			BufferedWriter writer = null;
+			if(!file.exists()) {
+				try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("File Error!");
+				}
+			}
+			else {
+				 try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if(sort) {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
@@ -157,8 +179,8 @@ public class Util {
 				}
 			} else {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
@@ -189,10 +211,27 @@ public class Util {
 	
 	public static void printConfirmeddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
+			File file = new File(output+".csv");
+			BufferedWriter writer = null;
+			if(!file.exists()) {
+				try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("File Error!");
+				}
+			}
+			else {
+				 try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if(sort) {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
@@ -203,8 +242,7 @@ public class Util {
 				}
 			} else {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
@@ -236,11 +274,28 @@ public class Util {
 	 * print the Result of recovered data that countryList is not given, considering options 
 	 */
 	public static void printRecovereddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
+		File file = new File(output+".csv");
+		BufferedWriter writer = null;
+		if(!file.exists()) {
+			try {
+				writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("File Error!");
+			}
+		}
+		else {
+			 try {
+				writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		if(output!=null) {
 			if(sort) {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
@@ -251,8 +306,8 @@ public class Util {
 				}
 			} else {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+		
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
@@ -281,11 +336,28 @@ public class Util {
 	 * print the Result of dead data that countryList is given, considering options 
 	 */
 	public static void printDeadResultWithCountry(Finalizer finalizer,boolean sort, String output) {
+		File file = new File(output+".csv");
+		BufferedWriter writer = null;
+		if(!file.exists()) {
+			try {
+				writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("File Error!");
+			}
+		}
+		else {
+			 try {
+				writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		if(output!=null) {
 			if(sort) {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
@@ -296,8 +368,7 @@ public class Util {
 				}
 			} else {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the dead patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
@@ -330,10 +401,27 @@ public class Util {
 	
 	public static void printRecovereddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
+			File file = new File(output+".csv");
+			BufferedWriter writer = null;
+			if(!file.exists()) {
+				try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("File Error!");
+				}
+			}
+			else {
+				 try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if(sort) {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
@@ -344,8 +432,7 @@ public class Util {
 				}
 			} else {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
@@ -377,10 +464,27 @@ public class Util {
 	 */
 	public static void printConfirmeddResultWithCountry(Finalizer finalizer,boolean sort, String output) {
 		if(output!=null) {
+			File file = new File(output+".csv");
+			BufferedWriter writer = null;
+			if(!file.exists()) {
+				try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("File Error!");
+				}
+			}
+			else {
+				 try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if(sort) {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
@@ -391,8 +495,7 @@ public class Util {
 				}
 			} else {
 				try {
-					FileWriter out = new FileWriter(output+".csv");
-					CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
+					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
 					printer.printRecord("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
