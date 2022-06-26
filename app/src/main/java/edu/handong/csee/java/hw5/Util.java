@@ -153,7 +153,7 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -161,7 +161,7 @@ public class Util {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -173,7 +173,7 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of dead patients.)");
 					finalizer.printSortDataByValue(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			} else {
@@ -185,7 +185,7 @@ public class Util {
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 					finalizer.printSortDataByKey(printer, output);
 				} catch (IOException e) {
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -216,7 +216,7 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -224,7 +224,7 @@ public class Util {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -342,8 +342,7 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -351,8 +350,7 @@ public class Util {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -408,16 +406,15 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					System.out.println("File Error!");
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			}
 			else {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
@@ -472,16 +469,15 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
+					System.exit(0);
 				}
 			}
 			else {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("File Error!");
+					System.out.println("File Error! Check file path parser");
 					System.exit(0);
 				}
 			}
