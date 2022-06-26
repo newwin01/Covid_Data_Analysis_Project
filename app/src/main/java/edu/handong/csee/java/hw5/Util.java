@@ -154,16 +154,16 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File Error!");
+					System.exit(0);
 				}
 			}
 			else {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("File Error!");
+					System.exit(0);
 				}
 			}
 			if(sort) {
@@ -187,7 +187,7 @@ public class Util {
 					finalizer.printSortDataByKey(printer, output);
 				} catch (IOException e) {
 					System.out.println("File Error!");
-					return;
+					System.exit(0);
 				}
 			}
 		}
@@ -217,24 +217,24 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File Error!");
+					System.exit(0);
 				}
 			}
 			else {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("File Error!");
+					System.exit(0);
 				}
 			}
 			if(sort) {
 				try {
 					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
-					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
-					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of recovered patients.)");
+					printer.printRecord("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
+					printer.printRecord("The total number of patients by the selected countries (Sorted by the number of confirmed patients.)");
 					finalizer.printSortDataByValue(printer, output);
 				} catch (IOException e) {
 					System.out.println("File Error! Check file path parser");
@@ -244,7 +244,7 @@ public class Util {
 				try {
 					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 					printer.printRecord("The total number of countries: " + finalizer.printTotalCountries());
-					printer.printRecord("The total number of the recovered patients until now: " + finalizer.printTotalPatient());
+					printer.printRecord("The total number of the confirmed patients until now: " + finalizer.printTotalPatient());
 					printer.printRecord("The total number of patients by the selected countries (Sorted by country names in alphabetical order.)");
 					finalizer.printSortDataByKey(printer, output);
 				} catch (IOException e) {
@@ -274,25 +274,25 @@ public class Util {
 	 * print the Result of recovered data that countryList is not given, considering options 
 	 */
 	public static void printRecovereddResultNoCountry(Finalizer finalizer,boolean sort, String output) {
-		File file = new File(output+".csv");
-		BufferedWriter writer = null;
-		if(!file.exists()) {
-			try {
-				writer = Files.newBufferedWriter(Paths.get(output+".csv"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.out.println("File Error!");
-			}
-		}
-		else {
-			 try {
-				writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		if(output!=null) {
+			File file = new File(output+".csv");
+			BufferedWriter writer = null;
+			if(!file.exists()) {
+				try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+				} catch (IOException e) {
+					System.out.println("File Error!");
+					System.exit(0);
+				}
+			}
+			else {
+				 try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+				} catch (IOException e) {
+					System.out.println("File Error!");
+					System.exit(0);
+				}
+			}
 			if(sort) {
 				try {
 					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
@@ -336,25 +336,27 @@ public class Util {
 	 * print the Result of dead data that countryList is given, considering options 
 	 */
 	public static void printDeadResultWithCountry(Finalizer finalizer,boolean sort, String output) {
-		File file = new File(output+".csv");
-		BufferedWriter writer = null;
-		if(!file.exists()) {
-			try {
-				writer = Files.newBufferedWriter(Paths.get(output+".csv"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.out.println("File Error!");
-			}
-		}
-		else {
-			 try {
-				writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		if(output!=null) {
+			File file = new File(output+".csv");
+			BufferedWriter writer = null;
+			if(!file.exists()) {
+				try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("File Error!");
+					System.exit(0);
+				}
+			}
+			else {
+				 try {
+					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("File Error!");
+					System.exit(0);
+				}
+			}
 			if(sort) {
 				try {
 					CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
@@ -407,7 +409,7 @@ public class Util {
 				try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.out.println("File Error!");
 					System.out.println("File Error!");
 				}
 			}
@@ -415,8 +417,9 @@ public class Util {
 				 try {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
+					System.out.println("File Error!");
+					System.exit(0);
 				}
 			}
 			if(sort) {
@@ -479,7 +482,8 @@ public class Util {
 					writer = Files.newBufferedWriter(Paths.get(output+".csv"),StandardOpenOption.APPEND,StandardOpenOption.CREATE);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("File Error!");
+					System.exit(0);
 				}
 			}
 			if(sort) {

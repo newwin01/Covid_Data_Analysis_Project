@@ -1,5 +1,7 @@
 package edu.handong.csee.java.hw5;
-
+/*
+ * CovidArrayList based on linked list
+ */
 public class CovidArrayList<E>  {
 	
 	private ListNode head;

@@ -20,9 +20,17 @@ import org.apache.commons.csv.CSVRecord;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
-
+/*
+ * ReadFile class is class that uses thread to read csv or zip data
+ */
 public class ReadFile {
-	
+	/*
+	 * readZipfile by using external library
+	 * it receives options and data
+	 * return LinkedHashMap 
+	 * key: country name
+	 * value: accumulated patients  
+	 */
 	public static LinkedHashMap<String, Integer> readZipFile(Options options,String data) {
 		CovidArrayList<String[]> list = new CovidArrayList<String[]>();
 		LinkedHashMap<String, Integer> finalValue = new LinkedHashMap<String,Integer>();
@@ -76,6 +84,13 @@ public class ReadFile {
 		return finalValue;
 		
 	}
+	/*
+	 * read CSV file by using external library
+	 * it receives options and data
+	 * return LinkedHashMap 
+	 * key: country name
+	 * value: accumulated patients  
+	 */
 	
 	public static LinkedHashMap<String, Integer>  readCSVFile(Options options,String data) {
 		CovidArrayList<String[]> list= new CovidArrayList<String[]>();
@@ -127,6 +142,13 @@ public class ReadFile {
 		return finalValue;
 	}
 	
+	/*
+	 * read CSV country file by using external library
+	 * it receives options and data
+	 * return LinkedHashMap 
+	 * key: country name
+	 * value: accumulated patients  
+	 */
 	public static CovidArrayList<String> readCSVCountryFile (String country){
 		CovidArrayList<String> countryList = new CovidArrayList<String>();
 		Reader in = null;

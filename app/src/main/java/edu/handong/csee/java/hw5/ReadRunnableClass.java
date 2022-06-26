@@ -1,5 +1,8 @@
 package edu.handong.csee.java.hw5;
-
+/*
+ * class implements runnable interface
+ * to use thread
+ */
 public class ReadRunnableClass implements Runnable {
 	
 	private String line[];
