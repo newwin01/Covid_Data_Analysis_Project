@@ -55,6 +55,10 @@ public class MainRunner {
 				printHelp(options);
 				return;
 			}
+			if(deadData==null&&confirmedData==null&&recoveredData==null) {
+				printHelp(options);
+				return;
+			}
 			
 			String fileName = null;
 			String fileRoot = null;
