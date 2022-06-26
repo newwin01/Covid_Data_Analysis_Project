@@ -62,6 +62,8 @@ public class ReadFile {
 				}
 				i++;
 			}
+			scannerFile.close();
+			zipFile.close();
 		} catch (ZipException e) {
 			e.printStackTrace();
 			System.out.println("Zip File Error!");
