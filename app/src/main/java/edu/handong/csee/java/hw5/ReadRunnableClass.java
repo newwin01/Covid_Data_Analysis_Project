@@ -6,7 +6,8 @@ package edu.handong.csee.java.hw5;
 public class ReadRunnableClass implements Runnable {
 	
 	private String line[];
-	private String lineString;
+	private Integer value;
+	private String key;
 	
 	/*
 	 * constructor for thread that receive string array
@@ -15,16 +16,12 @@ public class ReadRunnableClass implements Runnable {
 		this.line = line;
 	}
 	/*
-	 * constructor for thread that receive string
-	 */
-	public ReadRunnableClass(String line) {
-		this.lineString = line;
-	}
-	/*
 	 * run method overrides runnable interface, can check thread works correctly
 	 */
 	@Override
 	public void run() {
+		value = Util.makeInteger(line[line.length-1]);
+		key = line[1];
 	}
 	/*
 	 *  return its String Array
@@ -35,8 +32,11 @@ public class ReadRunnableClass implements Runnable {
 	/*
 	 * return its String
 	 */
-	public String returnString() {
-		return lineString;
+	public Integer returnInteger() {
+		return value;
+	}
+	public String returnKey() {
+		return key;
 	}
 
 }

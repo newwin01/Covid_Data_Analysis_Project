@@ -6,14 +6,18 @@ import java.util.LinkedHashMap;
  * to use thread
  */
 public class FileRunnableClass implements Runnable {
+	private String type;
+	private String data;
 	private LinkedHashMap<String,LinkedHashMap<String, Integer>> finalValue;
 	private CovidArrayList<String> list;
 	/*
 	 * receive linked hashmap that has String key and linked hashmap value that has country data
 	 */
-	public FileRunnableClass(LinkedHashMap<String,LinkedHashMap<String, Integer>> finalValue) {
-		this.finalValue = finalValue;
+	public FileRunnableClass(String type, String data) {
+		this.data = data;
+		this.type = type;
 	}
+	
 	/*
 	 * receive covid arraylist
 	 */
@@ -23,6 +27,21 @@ public class FileRunnableClass implements Runnable {
 	
 	@Override
 	public void run() {
+		if(!type.equals("country")) {
+			finalValue = new LinkedHashMap<String,LinkedHashMap<String, Integer>>();
+			LinkedHashMap<String, Integer> tempValue;
+			String exe = data.substring(data.lastIndexOf(".")+1);
+			if(exe.equals("zip")) {
+				tempValue = ReadFile.readZipFile(data);
+				finalValue.put(type, tempValue);
+			}
+			else if(exe.equals("csv")) {
+				tempValue = ReadFile.readCSVFile(data);
+				finalValue.put(type, tempValue);
+			}
+		} else {
+			list = ReadFile.readCSVCountryFile(data);
+		}
 	}
 	/*
 	 * return the linked hashmap value

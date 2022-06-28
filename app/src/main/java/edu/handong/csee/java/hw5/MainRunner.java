@@ -46,7 +46,6 @@ public class MainRunner {
 	
 	@SuppressWarnings("resource")
 	private void run(String args[]) {
-		String exe;
 		Options options = createOptions(); 
 		if(parseOptions(options, args)){
 			
@@ -102,30 +101,11 @@ public class MainRunner {
 			//use thread to read data at the same time
 			ArrayList<FileRunnableClass> readRunner = new ArrayList<FileRunnableClass>();
 			ExecutorService executor = Executors.newFixedThreadPool(4);
-			
-			
-			for(String data1:fileList.keySet()) {
-				String data = fileList.get(data1);
-				exe = data.substring(data.lastIndexOf(".")+1);
-				LinkedHashMap<String,LinkedHashMap<String, Integer>> value = new LinkedHashMap<String,LinkedHashMap<String, Integer>>();
-				if(exe.equals("zip")) {
-					value.put(data1, ReadFile.readZipFile(options, data));
-					Runnable worker = new FileRunnableClass(value);
-					executor.execute(worker);
-					readRunner.add((FileRunnableClass)worker);
-				}
-				else if(exe.equals("csv")) {
-					if(data.equals(country)) {
-						Runnable worker = new FileRunnableClass(ReadFile.readCSVCountryFile(data));
-						executor.execute(worker);
-						readRunner.add((FileRunnableClass)worker);
-					} else { 
-						value.put(data1, ReadFile.readCSVFile(options, data));
-						Runnable worker = new FileRunnableClass(value);
-						executor.execute(worker);
-						readRunner.add((FileRunnableClass)worker);
-					}
-				}
+			for(String type:fileList.keySet()) {
+				String data = fileList.get(type);
+				Runnable worker = new FileRunnableClass(type, data);
+				executor.execute(worker);
+				readRunner.add((FileRunnableClass)worker);
 			}
 			
 			executor.shutdown();
@@ -153,6 +133,7 @@ public class MainRunner {
 					countryList = runner.returnList();
 				}
 			}
+			
 			//delete file if older file exist
 			File fileExistance = new File(fileName+".csv");
 			if(fileExistance.exists()) {
