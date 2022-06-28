@@ -102,7 +102,8 @@ public class Finalizer {
 	 * print sorted Data by value 
 	 */
 	public void printSortDataByValue() {
-		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(finalValue.entrySet());
+		TreeMap<String,Integer> map = new TreeMap<String,Integer>(finalValue);
+		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(map.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
 			System.out.println("- "+info.getKey()+ ": " + info.getValue());
@@ -112,7 +113,8 @@ public class Finalizer {
 	 * save sorted all data by value in the Comma separate file
 	 */
 	public void printSortDataByValue(CSVPrinter printer, String output) throws IOException{
-		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(finalValue.entrySet());
+		TreeMap<String,Integer> map = new TreeMap<String,Integer>(finalValue);
+		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(map.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
 			printer.printRecord("- "+info.getKey()+ ": " + info.getValue());
@@ -132,6 +134,7 @@ public class Finalizer {
 				countryData.put(country,finalValue.get(country));
 			}
 		}
+		TreeMap<String,Integer> map = new TreeMap<String,Integer>(countryData);
 		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(countryData.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
@@ -150,6 +153,7 @@ public class Finalizer {
 				countryData.put(country,finalValue.get(country));
 			}
 		}
+		TreeMap<String,Integer> map = new TreeMap<String,Integer>(countryData);
 		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(countryData.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
