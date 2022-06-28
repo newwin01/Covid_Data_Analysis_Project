@@ -135,7 +135,7 @@ public class Finalizer {
 			}
 		}
 		TreeMap<String,Integer> map = new TreeMap<String,Integer>(countryData);
-		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(countryData.entrySet());
+		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(map.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
 			System.out.println("- "+info.getKey()+ ": " + info.getValue());
@@ -154,7 +154,7 @@ public class Finalizer {
 			}
 		}
 		TreeMap<String,Integer> map = new TreeMap<String,Integer>(countryData);
-		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(countryData.entrySet());
+		List<Map.Entry<String, Integer>> sortedData = new LinkedList<>(map.entrySet());
 		sortedData.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 		for(Map.Entry<String, Integer> info:sortedData) {
 			printer.printRecord("- "+info.getKey()+ ": " + info.getValue());
