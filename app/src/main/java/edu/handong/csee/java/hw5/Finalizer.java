@@ -80,8 +80,9 @@ public class Finalizer {
 			System.out.println("- "+ info.getKey()+ ": " + info.getValue());
 		}
 	}
-	
-	
+	/*
+	 * print sorted selected country data by key in the comma seperate file
+	 */
 	public void printSortDataByCountryKey(CSVPrinter printer, String output) throws IOException{
 		HashMap<String, Integer> countryData = new HashMap<String, Integer>();
 		for(int i=0;i<csvCountryName.length();i++) {

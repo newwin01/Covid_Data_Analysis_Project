@@ -24,7 +24,10 @@ public class FileRunnableClass implements Runnable {
 	public FileRunnableClass(CovidArrayList<String> list) {
 		this.list = list;
 	}
-	
+	/*
+	 * distinguish type of input file, 
+	 * read file and get appropriate value 
+	 */
 	@Override
 	public void run() {
 		if(!type.equals("country")) {
@@ -44,7 +47,7 @@ public class FileRunnableClass implements Runnable {
 		}
 	}
 	/*
-	 * return the linked hashmap value
+	 * return the linked hash map with data and value
 	 */
 	public LinkedHashMap<String, LinkedHashMap<String, Integer>> returnHashMap() {
 		return finalValue;

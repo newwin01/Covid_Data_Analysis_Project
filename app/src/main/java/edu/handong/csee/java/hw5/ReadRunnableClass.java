@@ -16,7 +16,8 @@ public class ReadRunnableClass implements Runnable {
 		this.line = line;
 	}
 	/*
-	 * run method overrides runnable interface, can check thread works correctly
+	 * run method overrides runnable interface
+	 * get key and value for hashamp using thread
 	 */
 	@Override
 	public void run() {
@@ -30,11 +31,14 @@ public class ReadRunnableClass implements Runnable {
 		return line;
 	}
 	/*
-	 * return its String
+	 * return value for hashmap
 	 */
 	public Integer returnInteger() {
 		return value;
 	}
+	/*
+	 * return Key value for hashmap
+	 */
 	public String returnKey() {
 		return key;
 	}
