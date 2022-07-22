@@ -168,6 +168,7 @@ public class ReadFile {
 			in = new FileReader(country);
 		} catch (FileNotFoundException e) {
 			System.out.println("File is not found!");
+			System.exit(0);
 		}
 		
 		//use thread to read country list
